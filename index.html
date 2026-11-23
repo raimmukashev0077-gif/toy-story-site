@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Лумо Студия</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sky-top:#cfe8ff;
+    --sky-bottom:#fff3e6;
+    --ink:#2b2340;
+    --ink-soft:#6b6385;
+    --card:rgba(255,255,255,.72);
+    --accent:#ff8a5b;
+    --accent-dark:#f26a3a;
+    --shadow:rgba(60,40,90,.18);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:"Nunito",system-ui,sans-serif;
+    color:var(--ink);
+    background:linear-gradient(180deg,var(--sky-top) 0%,var(--sky-bottom) 70%);
+    background-color:var(--sky-bottom);
+    min-height:100vh;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  button{font:inherit;color:inherit}
+
+  /* ---------- Плавающие шары ---------- */
+  .orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;
+    filter:drop-shadow(0 20px 30px var(--shadow));animation:float 9s ease-in-out infinite}
+  .orb.a{width:140px;height:140px;left:4%;top:18%;
+    background:radial-gradient(circle at 32% 28%,#fff 0 6%,#a7d8ff 22%,#5aa9f0 70%,#3b82d6 100%)}
+  .orb.b{width:80px;height:80px;right:9%;top:11%;animation-delay:-3s;
+    background:radial-gradient(circle at 32% 28%,#fff 0 6%,#ffc2d6 22%,#ff7fa8 70%,#e25586 100%)}
+  .orb.c{width:110px;height:110px;right:5%;bottom:12%;animation-delay:-5s;
+    background:radial-gradient(circle at 32% 28%,#fff 0 6%,#c9f2c0 22%,#7fd67a 70%,#4fb34b 100%)}
+  .orb.d{width:56px;height:56px;left:10%;bottom:14%;animation-delay:-1.5s;
+    background:radial-gradient(circle at 32% 28%,#fff 0 6%,#e2d4ff 22%,#a98bff 70%,#7c5ce0 100%)}
+  @keyframes float{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-22px) rotate(6deg)}}
+
+  /* ---------- Шапка ---------- */
+  header{position:relative;z-index:3;display:flex;align-items:center;justify-content:space-between;
+    max-width:1100px;margin:0 auto;padding:22px 20px}
+  .logo{display:flex;align-items:center;gap:10px;font-weight:900;font-size:22px;letter-spacing:-.5px;color:var(--ink);text-decoration:none}
+  .logo i{width:28px;height:28px;border-radius:50%;
+    background:radial-gradient(circle at 32% 28%,#fff 0 8%,#ffd36e 28%,#ffb23f 70%,#e48a1a 100%);box-shadow:0 6px 12px var(--shadow)}
+  .nav-link{color:var(--ink);text-decoration:none;font-weight:800;font-size:15px;padding:9px 16px;border-radius:999px;
+    background:rgba(255,255,255,.7);box-shadow:0 6px 14px var(--shadow);transition:transform .2s}
+  .nav-link:hover{transform:translateY(-2px)}
+
+  main{position:relative;z-index:1}
+
+  /* ---------- Приветствие ---------- */
+  .hero{min-height:calc(100vh - 82px);min-height:calc(100svh - 82px);display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:10px 16px 50px}
+  .pill{display:inline-flex;align-items:center;background:rgba(255,255,255,.8);padding:8px 16px;border-radius:999px;
+    font-weight:800;font-size:15px;color:var(--ink-soft);box-shadow:0 8px 18px var(--shadow);margin:8px 0 16px}
+  .hello{font-size:clamp(36px,7vw,66px);font-weight:900;letter-spacing:-1.5px;line-height:1.05}
+  .hello span{background:linear-gradient(90deg,var(--accent),#ff5b8c);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .sub{margin-top:12px;font-size:clamp(16px,2.4vw,19px);color:var(--ink-soft);font-weight:700;max-width:460px}
+  .actions{margin-top:26px;display:flex;flex-wrap:wrap;gap:14px;justify-content:center;align-items:center}
+
+  .btn{display:inline-block;border:0;cursor:pointer;font-weight:800;font-size:16px;color:#fff;text-decoration:none;padding:15px 28px;border-radius:999px;
+    background:linear-gradient(180deg,var(--accent),var(--accent-dark));box-shadow:0 6px 0 #c9542a,0 12px 20px rgba(242,106,58,.35);
+    transition:transform .12s,box-shadow .12s}
+  .btn:hover{transform:translateY(-1px)}
+  .btn:active{transform:translateY(5px);box-shadow:0 1px 0 #c9542a,0 4px 8px rgba(242,106,58,.35)}
+  .ghost{border:0;background:rgba(255,255,255,.75);cursor:pointer;font-weight:800;font-size:15px;padding:13px 20px;border-radius:999px;
+    box-shadow:0 6px 14px var(--shadow);transition:transform .15s}
+  .ghost:hover{transform:translateY(-2px)}
+
+  /* ---------- Сцена: детская комната ---------- */
+  .scene{position:relative;width:760px;height:330px;flex:none}
+  .rug{position:absolute;left:30px;right:30px;bottom:0;height:70px;border-radius:50%;
+    background:radial-gradient(ellipse at 50% 40%,#fff7ee 0 30%,#ffe2c4 60%,#ffd0a6 100%);
+    box-shadow:inset 0 -6px 14px rgba(200,120,40,.18),0 14px 30px var(--shadow)}
+  .actor{position:absolute;bottom:22px;border:0;background:none;cursor:pointer;-webkit-tap-highlight-color:transparent}
+  .actor:focus-visible{outline:3px solid var(--accent);outline-offset:4px;border-radius:20px}
+  .actor.robot-a{left:0}
+  .actor.bunny-a{left:150px}
+  .actor.bo-a{left:260px;bottom:12px}
+  .actor.rocket-a{left:470px}
+  .actor.bear-a{left:620px}
+
+  .zzz{position:absolute;left:62%;top:0;font-weight:900;color:#8c86a8;font-size:22px;opacity:0;pointer-events:none;transition:opacity .3s}
+  .zzz i{position:absolute;font-style:normal;animation:zz 2.4s ease-in infinite;opacity:0}
+  .zzz i:nth-child(2){animation-delay:.8s;font-size:.8em}
+  .zzz i:nth-child(3){animation-delay:1.6s;font-size:.6em}
+  @keyframes zz{0%{opacity:0;transform:translate(0,0)}20%{opacity:1}100%{opacity:0;transform:translate(26px,-46px)}}
+  .sleep .zzz{opacity:1}
+  .bo-a .zzz{left:66%;top:40px}
+
+  /* ---------- Бо ---------- */
+  .stage{position:relative;display:block;width:240px;height:250px}
+  .ground{position:absolute;left:50%;bottom:6px;width:150px;height:22px;margin-left:-75px;border-radius:50%;
+    background:radial-gradient(ellipse,rgba(60,40,90,.28),transparent 70%);animation:shadow 2.4s ease-in-out infinite}
+  .buddy{position:absolute;left:50%;bottom:18px;width:180px;height:180px;margin-left:-90px;transform-origin:50% 100%;animation:bounce 2.4s ease-in-out infinite}
+  .buddy > span{position:absolute;display:block}
+  .buddy .body{inset:0;border-radius:50% 50% 46% 46%/56% 56% 44% 44%;
+    background:radial-gradient(circle at 34% 26%,#fff6d6 0 7%,#ffd36e 26%,#ffb23f 66%,#e48a1a 100%);
+    box-shadow:inset -14px -18px 30px rgba(170,80,0,.35),inset 10px 10px 24px rgba(255,255,255,.5),0 24px 40px var(--shadow)}
+  .eye{position:absolute;display:block;border-radius:50%;background:radial-gradient(circle at 40% 35%,#fff 60%,#e9e4f2 100%);
+    box-shadow:inset 0 -4px 6px rgba(0,0,0,.08);overflow:hidden;animation:blink 5s infinite;transition:transform .3s}
+  .buddy .eye{top:58px;width:44px;height:50px}
+  .buddy .eye.l{left:40px}.buddy .eye.r{right:40px}
+  .pupil{position:absolute;display:block;left:50%;top:50%;width:50%;height:52%;transform:translate(-50%,-50%);border-radius:50%;
+    background:radial-gradient(circle,#3a2c5a 0 55%,#1d1530 100%)}
+  .pupil::after{content:"";position:absolute;left:18%;top:15%;width:36%;height:32%;border-radius:50%;background:#fff}
+  .buddy .pupil{transition:transform .08s linear}
+  @keyframes blink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.08)}}
+  .cheek{position:absolute;display:block;border-radius:50%;background:#ff8fa3;opacity:.55;filter:blur(2px)}
+  .buddy .cheek{top:110px;width:26px;height:14px}
+  .buddy .cheek.l{left:24px}.buddy .cheek.r{right:24px}
+  .buddy .mouth{left:50%;top:116px;width:34px;height:16px;margin-left:-17px;border-radius:0 0 34px 34px;background:#6a2a2a;overflow:hidden;transition:height .2s}
+  .buddy .mouth::after{content:"";position:absolute;left:50%;bottom:-6px;width:18px;height:12px;margin-left:-9px;border-radius:50%;background:#ff7b8b}
+  .buddy .arm{top:96px;width:34px;height:20px;border-radius:20px;background:linear-gradient(180deg,#ffd36e,#ffb23f);box-shadow:inset -4px -4px 8px rgba(170,80,0,.3)}
+  .buddy .arm.l{left:-18px;transform:rotate(20deg)}
+  .buddy .arm.r{right:-22px;transform-origin:0 50%;animation:wave 1.2s ease-in-out infinite}
+  @keyframes wave{0%,100%{transform:rotate(-40deg)}50%{transform:rotate(-80deg)}}
+  .buddy .antenna{left:50%;top:-26px;width:4px;height:30px;margin-left:-2px;background:#e48a1a;border-radius:4px}
+  .buddy .antenna::after{content:"";position:absolute;left:50%;top:-12px;width:18px;height:18px;margin-left:-9px;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%,#fff 0 12%,#ff9ab8 35%,#ff5b8c 100%);box-shadow:0 0 16px #ff8fb1}
+  @keyframes bounce{
+    0%,100%{transform:translateY(0) scale(1.06,.94)}
+    15%{transform:translateY(0) scale(.96,1.05)}
+    45%{transform:translateY(-34px) scale(.98,1.02)}
+    75%{transform:translateY(0) scale(1.08,.92)}
+    85%{transform:translateY(0) scale(1,1)}
+  }
+  @keyframes shadow{0%,75%,100%{transform:scale(1);opacity:1}45%{transform:scale(.72);opacity:.55}}
+  .buddy.jump{animation:flip .8s cubic-bezier(.3,.7,.4,1)}
+  .buddy.jump .mouth{height:24px}
+  @keyframes flip{
+    0%{transform:translateY(0) scale(1.15,.85)}
+    35%{transform:translateY(-90px) scale(.9,1.12) rotate(-6deg)}
+    60%{transform:translateY(-90px) rotate(360deg)}
+    85%{transform:translateY(0) scale(1.15,.85) rotate(360deg)}
+    100%{transform:translateY(0) rotate(360deg)}
+  }
+
+  /* Сон */
+  .sleep .eye{animation:none;transform:scaleY(.12)}
+  .sleep .buddy{animation:none;transform:scale(1.04,.96)}
+  .sleep .ground{animation:none}
+  .sleep .buddy .arm.r{animation:none;transform:rotate(-10deg)}
+  .sleep .buddy .mouth{height:6px}
+  .sleep .toy{animation:none;transform:rotate(-7deg) translateY(4px)}
+  .sleep .rocket .flame{opacity:0}
+
+  /* ---------- Пузырь реплики ---------- */
+  .bubble{position:absolute;z-index:5;left:50%;bottom:100%;display:block;width:max-content;max-width:240px;
+    background:#fff;color:var(--ink);font-weight:800;font-size:15px;line-height:1.3;text-align:center;
+    padding:9px 15px;border-radius:16px;box-shadow:0 10px 20px var(--shadow);
+    --bx:-50%;opacity:0;transform:translate(var(--bx),8px) scale(.9);transition:opacity .25s,transform .25s;pointer-events:none}
+  .bubble::after{content:"";position:absolute;left:var(--tail,50%);top:100%;margin-left:-7px;border:7px solid transparent;border-top-color:#fff}
+  .bubble.show{opacity:1;transform:translate(var(--bx),0) scale(1)}
+  .stage .bubble{bottom:calc(100% - 6px);max-width:320px}
+  .robot-a .bubble{left:4px;--bx:0;--tail:28%}
+  .bear-a .bubble{left:auto;right:4px;--bx:0;--tail:72%}
+
+  /* ---------- Истории игрушек ---------- */
+  .toys{max-width:1080px;margin:0 auto;padding:60px 16px 90px;scroll-margin-top:10px}
+  .toys-head{text-align:center;margin-bottom:40px}
+  .toys-head h2{font-size:clamp(30px,5vw,46px);font-weight:900;letter-spacing:-1px}
+  .toys-head p{margin-top:10px;color:var(--ink-soft);font-weight:700;font-size:17px}
+  .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+  .card{position:relative;background:var(--card);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-radius:28px;
+    padding:26px 20px 24px;text-align:center;box-shadow:0 20px 40px var(--shadow);cursor:pointer;border:0;
+    transition:transform .3s cubic-bezier(.3,.7,.4,1.4);-webkit-tap-highlight-color:transparent}
+  .card:hover{transform:translateY(-8px)}
+  .card:focus-visible{outline:3px solid var(--accent);outline-offset:4px}
+  .card h3{font-size:21px;font-weight:900;margin-top:6px}
+  .card p{color:var(--ink-soft);font-weight:700;line-height:1.45;margin-top:6px;font-size:15px}
+  .card .bubble{bottom:auto;top:-14px}
+
+  /* ---------- Игрушки ---------- */
+  .toy{position:relative;display:block;width:140px;height:150px;margin:0 auto;transform-origin:50% 100%;animation:idle 3s ease-in-out infinite;transition:transform .3s}
+  .robot{animation-delay:-.7s}.bunny{animation-delay:-1.4s}.rocket{animation-delay:-2.1s}.bear{animation-delay:-.3s}
+  @keyframes idle{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg) translateY(-4px)}}
+  .toy.hop{animation:hop .7s cubic-bezier(.3,.7,.4,1)}
+  @keyframes hop{0%{transform:scale(1.12,.88)}40%{transform:translateY(-40px) scale(.92,1.1)}75%{transform:scale(1.1,.9)}100%{transform:none}}
+  .toy::before{content:"";position:absolute;left:50%;bottom:-4px;width:100px;height:14px;margin-left:-50px;border-radius:50%;
+    background:radial-gradient(ellipse,rgba(60,40,90,.22),transparent 70%)}
+  .toy > span{position:absolute;display:block}
+  .toy .eye{width:18px;height:20px}
+  .toy .cheek{width:16px;height:9px}
+
+  /* Робот Винтик */
+  .robot .head{left:30px;top:18px;width:80px;height:66px;border-radius:22px;
+    background:linear-gradient(160deg,#e6f1ff,#8fb6ea 70%,#6b95d4);box-shadow:inset -6px -8px 14px rgba(40,70,140,.35),inset 6px 6px 12px rgba(255,255,255,.7)}
+  .robot .ant{left:68px;top:2px;width:4px;height:18px;background:#6b95d4;border-radius:3px}
+  .robot .ant::after{content:"";position:absolute;left:-5px;top:-8px;width:14px;height:14px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff 0 15%,#7fe0a0 40%,#33b86a)}
+  .robot .eye.l{left:46px;top:36px}.robot .eye.r{left:76px;top:36px}
+  .robot .grin{left:60px;top:64px;width:20px;height:6px;border-radius:4px;background:#3a4c7a}
+  .robot .torso{left:40px;top:86px;width:60px;height:48px;border-radius:16px;
+    background:linear-gradient(160deg,#ffd9a0,#ffad4a 70%,#ef8d22);box-shadow:inset -5px -6px 10px rgba(170,80,0,.3),inset 5px 5px 10px rgba(255,255,255,.5)}
+  .robot .heart{left:62px;top:100px;width:16px;height:16px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff 0 15%,#ff7fa8 45%,#e25586)}
+
+  /* Зайка Плюша */
+  .bunny .ear{top:0;width:26px;height:66px;border-radius:50%;background:linear-gradient(180deg,#ffe0ea,#ffb3c9);box-shadow:inset -4px -6px 10px rgba(200,80,120,.25)}
+  .bunny .ear::after{content:"";position:absolute;left:7px;top:10px;width:12px;height:42px;border-radius:50%;background:#ff9fbc}
+  .bunny .ear.l{left:38px;transform:rotate(-10deg)}.bunny .ear.r{left:76px;transform:rotate(10deg)}
+  .bunny .head{left:22px;top:46px;width:96px;height:92px;border-radius:50%;
+    background:radial-gradient(circle at 34% 28%,#fff 0 8%,#ffe0ea 30%,#ffb8cc 75%,#f08fae);box-shadow:inset -8px -10px 18px rgba(200,80,120,.3)}
+  .bunny .eye.l{left:44px;top:76px}.bunny .eye.r{left:78px;top:76px}
+  .bunny .nose{left:63px;top:102px;width:14px;height:10px;border-radius:50%;background:#e2557f}
+  .bunny .cheek.l{left:32px;top:104px}.bunny .cheek.r{left:92px;top:104px}
+
+  /* Ракета Искра */
+  .rocket .flame{left:56px;top:118px;width:28px;height:30px;border-radius:50% 50% 50% 50%/30% 30% 70% 70%;
+    background:radial-gradient(circle at 50% 30%,#fff3b0,#ffb23f 55%,#ff6a3a);transform-origin:50% 0;animation:flame .15s infinite alternate;transition:opacity .3s}
+  @keyframes flame{to{transform:scaleY(1.25)}}
+  .rocket .fin{top:86px;width:28px;height:40px;background:linear-gradient(180deg,#ff7f7f,#e04848)}
+  .rocket .fin.l{left:24px;border-radius:30px 4px 4px 14px}.rocket .fin.r{left:88px;border-radius:4px 30px 14px 4px}
+  .rocket .hull{left:40px;top:6px;width:60px;height:118px;border-radius:50% 50% 24% 24%/60% 60% 14% 14%;
+    background:linear-gradient(90deg,#d9dbe6,#ffffff 40%,#cfd2df);box-shadow:inset -6px -8px 12px rgba(60,60,100,.2)}
+  .rocket .tip{left:40px;top:6px;width:60px;height:36px;background:linear-gradient(90deg,#e04848,#ff8080 45%,#d63c3c);clip-path:ellipse(30px 38px at 50% 100%)}
+  .rocket .window{left:54px;top:48px;width:32px;height:32px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff 0 12%,#9fd4ff 35%,#3b82d6);border:4px solid #b8bccc}
+  .rocket .eye.l{left:58px;top:56px;width:10px;height:12px}.rocket .eye.r{left:72px;top:56px;width:10px;height:12px}
+
+  /* Мишка Тоша */
+  .bear .ear{top:20px;width:38px;height:38px;border-radius:50%;background:radial-gradient(circle,#e7b98a 0 35%,#b9824f 40%,#9a6638)}
+  .bear .ear.l{left:22px}.bear .ear.r{left:80px}
+  .bear .head{left:20px;top:32px;width:100px;height:96px;border-radius:50%;
+    background:radial-gradient(circle at 34% 28%,#f3d1ad 0 6%,#d19a64 32%,#b07a46 75%,#8d5a2e);box-shadow:inset -8px -10px 18px rgba(80,40,10,.3)}
+  .bear .eye.l{left:42px;top:62px}.bear .eye.r{left:80px;top:62px}
+  .bear .snout{left:50px;top:88px;width:40px;height:30px;border-radius:50%;background:#f1d6b6}
+  .bear .nose{left:61px;top:92px;width:18px;height:12px;border-radius:50%;background:#4a2c18}
+  .bear .cheek.l{left:30px;top:94px}.bear .cheek.r{left:94px;top:94px}
+
+  footer{text-align:center;padding:0 16px 34px;color:var(--ink-soft);font-weight:700;font-size:14px}
+
+  /* ---------- Адаптив ---------- */
+  @media (max-width:820px){
+    .scene{zoom:.66}
+    .scene .bubble{font-size:20px;max-width:300px}
+    .grid{grid-template-columns:repeat(2,1fr)}
+  }
+  @media (max-width:520px){
+    .scene{zoom:.46}
+    .scene .bubble{font-size:29px;max-width:420px;padding:12px 20px;border-radius:22px}
+    .zzz{font-size:34px}
+    .orb.a{width:90px;height:90px;left:-28px}
+    .orb.b{width:56px;height:56px}
+    .orb.c{width:70px;height:70px;right:-18px}
+    .grid{gap:14px}
+    .card{padding:20px 10px 18px;border-radius:22px}
+    .card .toy{zoom:.8}
+    .card h3{font-size:18px}
+    .card p{font-size:13px}
+    .card .bubble{font-size:13px;max-width:150px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}
+  }
+</style>
+</head>
+<body>
+  <div class="orb a"></div><div class="orb b"></div><div class="orb c"></div><div class="orb d"></div>
+
+  <header>
+    <a class="logo" href="#top"><i></i>Лумо</a>
+    <a class="nav-link" href="#toys">Игрушки</a>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="scene" id="scene">
+        <div class="rug"></div>
+
+        <button class="actor robot-a sleep" type="button" data-key="robot" aria-label="Винтик">
+          <span class="bubble"></span><span class="zzz"><i>z</i><i>z</i><i>z</i></span>
+          <span class="toy robot" data-toy="robot"></span>
+        </button>
+
+        <button class="actor bunny-a sleep" type="button" data-key="bunny" aria-label="Плюша">
+          <span class="bubble"></span><span class="zzz"><i>z</i><i>z</i><i>z</i></span>
+          <span class="toy bunny" data-toy="bunny"></span>
+        </button>
+
+        <button class="actor bo-a sleep" type="button" data-key="bo" aria-label="Бо">
+          <span class="stage">
+            <span class="bubble"></span><span class="zzz"><i>z</i><i>z</i><i>z</i></span>
+            <span class="ground"></span>
+            <span class="buddy">
+              <span class="antenna"></span>
+              <span class="arm l"></span><span class="arm r"></span>
+              <span class="body"></span>
+              <span class="eye l"><span class="pupil"></span></span>
+              <span class="eye r"><span class="pupil"></span></span>
+              <span class="cheek l"></span><span class="cheek r"></span>
+              <span class="mouth"></span>
+            </span>
+          </span>
+        </button>
+
+        <button class="actor rocket-a sleep" type="button" data-key="rocket" aria-label="Искра">
+          <span class="bubble"></span><span class="zzz"><i>z</i><i>z</i><i>z</i></span>
+          <span class="toy rocket" data-toy="rocket"></span>
+        </button>
+
+        <button class="actor bear-a sleep" type="button" data-key="bear" aria-label="Тоша">
+          <span class="bubble"></span><span class="zzz"><i>z</i><i>z</i><i>z</i></span>
+          <span class="toy bear" data-toy="bear"></span>
+        </button>
+      </div>
+
+      <div class="pill" id="pill">👋 Добрый день</div>
+      <h1 class="hello">Добро пожаловать<br>в <span>Лумо</span>!</h1>
+      <p class="sub">Тсс… игрушки проснулись, чтобы поздороваться с тобой.</p>
+      <div class="actions">
+        <a class="btn" href="#toys">Истории игрушек</a>
+        <button class="ghost" id="again" type="button">↻ Разбудить ещё раз</button>
+      </div>
+    </section>
+
+    <section class="toys" id="toys">
+      <div class="toys-head">
+        <h2>Истории игрушек</h2>
+        <p>Нажми на игрушку — она что-нибудь скажет</p>
+      </div>
+      <div class="grid" id="grid">
+        <button class="card" type="button" data-key="robot">
+          <span class="bubble"></span><span class="toy robot" data-toy="robot"></span>
+          <h3>Винтик</h3><p>Маленький робот, который чинит сломанные игрушки по ночам.</p>
+        </button>
+        <button class="card" type="button" data-key="bunny">
+          <span class="bubble"></span><span class="toy bunny" data-toy="bunny"></span>
+          <h3>Плюша</h3><p>Плюшевая зайка, которая утешает всех, кому грустно.</p>
+        </button>
+        <button class="card" type="button" data-key="rocket">
+          <span class="bubble"></span><span class="toy rocket" data-toy="rocket"></span>
+          <h3>Искра</h3><p>Игрушечная ракета, мечтающая долететь до настоящих звёзд.</p>
+        </button>
+        <button class="card" type="button" data-key="bear">
+          <span class="bubble"></span><span class="toy bear" data-toy="bear"></span>
+          <h3>Тоша</h3><p>Старый добрый мишка — самый мудрый житель детской.</p>
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <footer>Сделано с теплом · Лумо Студия © 2026</footer>
+
+<script>
+(function(){
+  const $ = s => document.querySelector(s);
+  const $$ = s => Array.from(document.querySelectorAll(s));
+  const EYES = '<span class="eye l"><span class="pupil"></span></span><span class="eye r"><span class="pupil"></span></span>';
+
+  // Внешний вид игрушек (один шаблон для сцены и карточек)
+  const LOOKS = {
+    robot: '<span class="ant"></span><span class="head"></span>' + EYES + '<span class="grin"></span><span class="torso"></span><span class="heart"></span>',
+    bunny: '<span class="ear l"></span><span class="ear r"></span><span class="head"></span>' + EYES + '<span class="nose"></span><span class="cheek l"></span><span class="cheek r"></span>',
+    rocket:'<span class="flame"></span><span class="fin l"></span><span class="fin r"></span><span class="hull"></span><span class="tip"></span><span class="window"></span>' + EYES,
+    bear:  '<span class="ear l"></span><span class="ear r"></span><span class="head"></span>' + EYES + '<span class="snout"></span><span class="nose"></span><span class="cheek l"></span><span class="cheek r"></span>'
+  };
+  $$('[data-toy]').forEach(el => { el.innerHTML = LOOKS[el.dataset.toy]; });
+
+  // Приветствия при пробуждении и реплики по нажатию
+  const HELLO = {
+    bo:     'Тсс… к нам гость! 👀',
+    robot:  'Бип-буп! Новый друг!',
+    bunny:  'Ой, привет! Обнимашки? 🤗',
+    rocket: 'Добро пожаловать на борт! 🚀',
+    bear:   'Мы тебя так ждали!'
+  };
+  const LINES = {
+    bo:     ['Хи-хи, щекотно!','Загляни к игрушкам ⬇️','Уиии! 🎈','Рад тебя видеть 💛'],
+    robot:  ['Бип-буп! Привет!','Я починю что угодно 🔧','Моё сердце светится, когда ты рядом'],
+    bunny:  ['Обнимашки? 🤗','Я самая мягкая на полке','Давай дружить!'],
+    rocket: ['3… 2… 1… Пуск! 🚀','Сегодня летим до потолка!','Звёзды ждут нас ✨'],
+    bear:   ['Тсс… хозяин идёт!','Я храню все секреты 🤫','Кто съел мёд? Не я!']
+  };
+
+  // Приветствие по времени суток
+  const h = new Date().getHours();
+  $('#pill').textContent = h < 5 ? '🌙 Доброй ночи' : h < 12 ? '☀️ Доброе утро' : h < 18 ? '👋 Добрый день' : '🌆 Добрый вечер';
+
+  // Помощники
+  const hideTimers = new WeakMap();
+  function say(holder, text, ms){
+    const b = holder.querySelector('.bubble');
+    b.textContent = text;
+    b.classList.add('show');
+    clearTimeout(hideTimers.get(b));
+    hideTimers.set(b, setTimeout(() => b.classList.remove('show'), ms || 2300));
+  }
+  function hush(root){ root.querySelectorAll('.bubble.show').forEach(b => b.classList.remove('show')); }
+  function replay(el, cls){ el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
+  function hop(holder){
+    const buddy = holder.querySelector('.buddy');
+    if (buddy) replay(buddy, 'jump'); else replay(holder.querySelector('.toy'), 'hop');
+  }
+  document.addEventListener('animationend', e => {
+    if (e.animationName === 'flip') e.target.classList.remove('jump');
+    if (e.animationName === 'hop') e.target.classList.remove('hop');
+  });
+
+  // Сцена пробуждения
+  const scene = $('#scene');
+  const actors = $$('.actor');
+  const byKey = k => scene.querySelector('.actor[data-key="' + k + '"]');
+  const ORDER = ['bo','robot','bunny','rocket','bear'];
+  let timers = [];
+  const later = (fn, ms) => timers.push(setTimeout(fn, ms));
+
+  function play(){
+    timers.forEach(clearTimeout); timers = [];
+    hush(scene);
+    actors.forEach(a => a.classList.add('sleep'));
+    ORDER.forEach((k, i) => later(() => {
+      hush(scene);
+      const a = byKey(k);
+      a.classList.remove('sleep');
+      hop(a);
+      say(a, HELLO[k], 2200);
+    }, 700 + i * 1300));
+    later(() => {
+      hush(scene);
+      actors.forEach((a, i) => later(() => { a.classList.remove('sleep'); hop(a); }, i * 90));
+      say(byKey('bo'), 'Добро пожаловать в Лумо! 💛', 3200);
+    }, 700 + ORDER.length * 1300);
+  }
+
+  const counters = {};
+  function onTap(holder, root){
+    const id = root.id + ':' + holder.dataset.key;
+    const n = counters[id] || 0;
+    counters[id] = n + 1;
+    const lines = LINES[holder.dataset.key];
+    hush(root);
+    holder.classList.remove('sleep');
+    hop(holder);
+    say(holder, lines[n % lines.length]);
+  }
+  const grid = $('#grid');
+  actors.forEach(a => a.addEventListener('click', () => onTap(a, scene)));
+  $$('.card').forEach(c => c.addEventListener('click', () => onTap(c, grid)));
+  $('#again').addEventListener('click', play);
+
+  // Глаза Бо следят за курсором
+  const pupils = scene.querySelectorAll('.buddy .pupil');
+  let raf = 0, px = 0, py = 0;
+  function look(){
+    raf = 0;
+    pupils.forEach(p => {
+      const r = p.parentElement.getBoundingClientRect();
+      const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+      const a = Math.atan2(py - cy, px - cx), d = Math.min(9, Math.hypot(px - cx, py - cy) / 18);
+      p.style.transform = 'translate(calc(-50% + ' + (Math.cos(a) * d).toFixed(1) + 'px), calc(-50% + ' + (Math.sin(a) * d).toFixed(1) + 'px))';
+    });
+  }
+  window.addEventListener('pointermove', e => { px = e.clientX; py = e.clientY; if (!raf) raf = requestAnimationFrame(look); }, {passive:true});
+
+  play();
+})();
+</script>
+</body>
+</html>
